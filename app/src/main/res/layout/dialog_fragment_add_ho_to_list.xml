@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.AddHoToListDialogFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.othadd.hoscheduler.viewmodel.SchedulerViewModel" />
+
+        <variable
+            name="addHoToListDialogFragment"
+            type="com.othadd.hoscheduler.ui.AddHoToListDialogFragment" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField_hoName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="House Officer's Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_hoName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName|textCapWords" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textViewPickOffDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Pick off-days (leave days, special consideration days, etc)"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintStart_toStartOf="@id/recycler_offDaysSelection"
+                app:layout_constraintTop_toBottomOf="@id/textField_hoName" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_offDaysSelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewPickOffDays"
+                app:spanCount="7"
+                tools:itemCount="31"
+                tools:listitem="@layout/dialog_create_ho_offdays_selection_list_item" />
+
+            <TextView
+                android:id="@+id/textViewNewHO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="New HO"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintStart_toStartOf="@id/recycler_offDaysSelection"
+                app:layout_constraintTop_toBottomOf="@id/recycler_offDaysSelection" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_newHO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/textViewNewHO"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textViewNewHO" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField_newHOResumptionDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Resumption Date"
+                app:layout_constraintStart_toStartOf="@id/textViewNewHO"
+                app:layout_constraintTop_toBottomOf="@id/textViewNewHO">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_newHOResumptionDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textViewExitingHO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Exiting before month End"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintStart_toStartOf="@id/recycler_offDaysSelection"
+                app:layout_constraintTop_toBottomOf="@id/textField_newHOResumptionDate" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_exitingHO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/textViewExitingHO"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textViewExitingHO" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField_exitingDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Last Day"
+                app:layout_constraintStart_toStartOf="@id/textViewNewHO"
+                app:layout_constraintTop_toBottomOf="@id/textViewExitingHO">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_oldHoExitingDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textViewPickOutsideDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Select 5 days of outside posting"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintStart_toStartOf="@id/textField_hoName"
+                app:layout_constraintTop_toBottomOf="@id/textField_exitingDate" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_outsidePostingDaysSelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewPickOutsideDays"
+                app:spanCount="7"
+                tools:itemCount="31"
+                tools:listitem="@layout/dialog_create_ho_offdays_selection_list_item" />
+
+            <Button
+                android:id="@+id/btn_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> addHoToListDialogFragment.onAddButtonClicked()}"
+                android:text="Add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_outsidePostingDaysSelection" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>

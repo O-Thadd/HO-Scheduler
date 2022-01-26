@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/primaryDarkColor"
+        app:cardCornerRadius="@dimen/cardview_default_radius"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/ward_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="L/Ward" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

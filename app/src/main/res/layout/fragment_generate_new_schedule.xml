@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.GenerateNewScheduleFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.othadd.hoscheduler.viewmodel.SchedulerViewModel" />
+
+        <variable
+            name="generateNewScheduleFragment"
+            type="com.othadd.hoscheduler.ui.GenerateNewScheduleFragment" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_calendar_today_24"
+            app:layout_constraintBottom_toBottomOf="@id/monthTextField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/monthTextField"
+            app:tint="@color/primaryColor" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/monthTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/monthEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="@{viewModel.selectedMonth}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/month_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/monthTextField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/monthTextField"
+            app:tint="@color/secondaryColor" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/schedule_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Schedule Name"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/monthTextField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_scheduleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName|textCapWords"
+                android:text="@{viewModel.scheduleName}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/scheduleName_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/schedule_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/schedule_name"
+            app:tint="@color/secondaryColor" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/year"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Year"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/schedule_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@{viewModel.scheduleYear.toString()}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/year_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/year"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/year"
+            app:tint="@color/secondaryColor" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="246dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_format_list_bulleted_24"
+            app:layout_constraintBottom_toBottomOf="@id/btn_createHoList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_createHoList"
+            app:tint="@color/primaryColor" />
+
+        <Button
+            android:id="@+id/btn_createHoList"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="8dp"
+            android:onClick="@{() -> generateNewScheduleFragment.onCreateHoListButtonClicked()}"
+            android:text="Create HO list"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/year" />
+
+        <ImageView
+            android:id="@+id/hoList_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_createHoList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_createHoList"
+            app:tint="@color/secondaryColor" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="32dp" />
+
+        <Button
+            android:id="@+id/button_generate"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:onClick="@{() -> generateNewScheduleFragment.generateSchedule()}"
+            android:text="generate"
+            app:icon="@drawable/ic_baseline_star_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/btn_createHoList" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

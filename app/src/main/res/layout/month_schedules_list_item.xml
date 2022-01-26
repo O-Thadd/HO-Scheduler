@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/cardview_default_radius"
+            app:cardElevation="@dimen/cardview_default_elevation"
+            app:cardUseCompatPadding="true">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/monthSchedule_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@android:style/TextAppearance.Material.Headline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="November Schedule" />
+
+                <TextView
+                    android:id="@+id/monthSchedule_monthAndYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/monthSchedule_name"
+                    tools:text="Nov 2021" />
+
+                <TextView
+                    android:id="@+id/monthSchedule_numberOfHos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    app:layout_constraintStart_toEndOf="@+id/monthSchedule_monthAndYear"
+                    app:layout_constraintTop_toBottomOf="@id/monthSchedule_name"
+                    tools:text="32 HOs" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+
+</layout>

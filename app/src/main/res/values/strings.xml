@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">HO Scheduler</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="month_schedule_name_and_year">%1$s %2$s</string>
+    <string name="month_schedule_no_of_hos">%1d HOs</string>
+    <string name="day_slash_month">%1d/%2d</string>
+    <string name="number_of_off_days">%1d off-day(s)</string>
+    <string name="total_number_of_calls">Total Calls: %1d</string>
+    <string name="number_of_LW_calls">LW: %1d</string>
+    <string name="number_of_GE_calls">GE: %1d</string>
+    <string name="number_of_SW4_calls">SW4: %1d</string>
+    <string name="number_of_weekend_calls">Weekend: %1d</string>
+    <string name="number_of_active_calls">Active Calls: %1d</string>
+
+    <string name="label">{label}</string>
+</resources>
