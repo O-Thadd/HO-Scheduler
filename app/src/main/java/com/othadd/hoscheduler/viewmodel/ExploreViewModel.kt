@@ -18,7 +18,7 @@ class OverviewViewModel(private val monthScheduleDao: MonthScheduleDao) : ViewMo
     val ho: LiveData<Ho> get() = _ho
 
     private var _wards = MutableLiveData<List<Ward>>()
-    val wards: LiveData<List<Ward>> get() = _wards
+    private val wards: LiveData<List<Ward>> get() = _wards
 
     private var _ward = MutableLiveData<Ward>()
     val ward: LiveData<Ward> get() = _ward

@@ -79,6 +79,9 @@ class GenerateScheduleViewModel(private val monthScheduleDao: MonthScheduleDao) 
         yearIsOk = false
         _hoListIsOk.value = false
         monthSelectionIsOk = false
+
+        _hoListCreateButtonIsActive.value = false
+        _generateScheduleButtonIsActive.value = false
     }
 
 }
