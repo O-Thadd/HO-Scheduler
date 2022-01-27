@@ -7,41 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.othadd.hoscheduler.SchedulerApplication
 import com.othadd.hoscheduler.databinding.DialogFragmentAddHoToListBinding
 import com.othadd.hoscheduler.ui.recyclerAdapters.DaysSelectionRecyclerAdapter
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModel
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModelFactory
+import com.othadd.hoscheduler.viewmodel.HoListCreationViewModel
+import com.othadd.hoscheduler.viewmodel.HoListCreationViewModelFactory
 
 class AddHoToListDialogFragment : DialogFragment() {
 
     var switchNewHOIsOn = false
     var switchExitingHOIsOn = false
 
-    val args: AddHoToListDialogFragmentArgs by navArgs()
-
 
     companion object {
         const val TAG = "FilterDialog"
     }
 
-    private val sharedViewModel: SchedulerViewModel by activityViewModels {
-        SchedulerViewModelFactory(
-            (activity?.application as SchedulerApplication).database
-                .monthScheduleDao()
-        )
+    private val sharedViewModel: HoListCreationViewModel by activityViewModels {
+        HoListCreationViewModelFactory()
     }
 
     lateinit var binding: DialogFragmentAddHoToListBinding
-
-    private val offDaysSelectionRecyclerAdapter: DaysSelectionRecyclerAdapter
-        get() {
-            val adapter = DaysSelectionRecyclerAdapter {
-                sharedViewModel.updateOffDay(it)
-            }
-            return adapter
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,8 +37,11 @@ class AddHoToListDialogFragment : DialogFragment() {
         binding = DialogFragmentAddHoToListBinding.inflate(inflater, container, false)
 
 
-        val offDaysSelectionAdapter = offDaysSelectionRecyclerAdapter
+        val offDaysSelectionAdapter = DaysSelectionRecyclerAdapter{
+            sharedViewModel.updateOffDay(it)
+        }
         offDaysSelectionAdapter.updateDataList(sharedViewModel.daysInMonthForNewSchedule)
+
 
         val outsidePostingDaysSelectionAdapter = DaysSelectionRecyclerAdapter{
             sharedViewModel.updateHoOutsidePostingDays(it)

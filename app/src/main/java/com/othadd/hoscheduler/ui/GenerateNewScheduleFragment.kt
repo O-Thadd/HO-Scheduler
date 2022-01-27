@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.othadd.hoscheduler.R
 import com.othadd.hoscheduler.SchedulerApplication
 import com.othadd.hoscheduler.databinding.FragmentGenerateNewScheduleBinding
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModel
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModelFactory
+import com.othadd.hoscheduler.viewmodel.GenerateScheduleViewModel
+import com.othadd.hoscheduler.viewmodel.GenerateScheduleViewModelFactory
 import java.util.*
 
 class GenerateNewScheduleFragment : Fragment() {
@@ -35,10 +35,8 @@ class GenerateNewScheduleFragment : Fragment() {
         "December"
     )
 
-    var numberOfDaysInFollowingMonth: Int = 0
-
-    private val sharedViewModel: SchedulerViewModel by activityViewModels {
-        SchedulerViewModelFactory(
+    private val sharedViewModel: GenerateScheduleViewModel by activityViewModels {
+        GenerateScheduleViewModelFactory(
             (activity?.application as SchedulerApplication).database
                 .monthScheduleDao()
         )
@@ -70,7 +68,7 @@ class GenerateNewScheduleFragment : Fragment() {
         val monthNameTick = binding.monthTick
         monthSelectionTextView.setAdapter(adapter)
         monthSelectionTextView.setOnItemClickListener { _, _, position, _ ->
-            sharedViewModel.selectedMonthNumber = position
+            sharedViewModel.setSelectedMonthNumber(position)
         }
         monthSelectionTextView.addTextChangedListener {
             sharedViewModel.monthSelectionIsOk = it.toString().isNotBlank()
@@ -78,9 +76,8 @@ class GenerateNewScheduleFragment : Fragment() {
                 monthNameTick.visibility = ImageView.VISIBLE
             } else monthNameTick.visibility = ImageView.INVISIBLE
             sharedViewModel.updateGenerateAndHoListCreateButtonStatus()
-            sharedViewModel.selectedMonth = (it.toString())
+            sharedViewModel.setSelectedMonthName(it.toString())
         }
-
 
 
 
@@ -101,18 +98,18 @@ class GenerateNewScheduleFragment : Fragment() {
         }
 
         yearEditText.addTextChangedListener {
-            sharedViewModel.yearIsOk = if(it.toString().isBlank()) false else it.toString().toInt() in 1000..2999
-            if (sharedViewModel.yearIsOk) {
-                yearTick.visibility = ImageView.VISIBLE
-            } else yearTick.visibility = ImageView.INVISIBLE
-            sharedViewModel.updateGenerateAndHoListCreateButtonStatus()
             if (it.toString().isNotBlank()){
                 sharedViewModel.setScheduleYear(it.toString().toInt())
             }
+            sharedViewModel.updateGenerateAndHoListCreateButtonStatus()
+
+            if (sharedViewModel.yearIsOk) {
+                yearTick.visibility = ImageView.VISIBLE
+            } else yearTick.visibility = ImageView.INVISIBLE
         }
 
-        sharedViewModel.newMonthScheduleHoList.observe(this.viewLifecycleOwner) {
-            if (it.isNotEmpty())
+        sharedViewModel.hoListIsOk.observe(this.viewLifecycleOwner) {
+            if (it)
                 hoListTick.visibility = ImageView.VISIBLE
             else hoListTick.visibility = ImageView.INVISIBLE
         }
@@ -129,19 +126,13 @@ class GenerateNewScheduleFragment : Fragment() {
     fun onCreateHoListButtonClicked() {
         sharedViewModel.updateDaysInMonthForNewSchedule()
         val action =
-            GenerateNewScheduleFragmentDirections.actionGenerateNewScheduleFragmentToHoListCreationFragment(numberOfDaysInFollowingMonth)
+            GenerateNewScheduleFragmentDirections.actionGenerateNewScheduleFragmentToHoListCreationFragment()
         findNavController().navigate(action)
     }
 
     fun generateSchedule() {
-//        sharedViewModel.generateSchedules(
-//            binding.editTextScheduleName.text.toString(),
-//            monthName,
-//            followingMonthNumber,
-//            binding.editTextYear.text.toString().toInt()
-//        )
 
-        sharedViewModel.generateSchedulesInStages()
+        sharedViewModel.generateSchedules()
 
         val action = GenerateNewScheduleFragmentDirections.actionGenerateNewScheduleFragmentToHomeFragment()
         findNavController().navigate(action)

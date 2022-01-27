@@ -31,6 +31,8 @@
         <action
             android:id="@+id/action_monthScheduleOverviewFragment_to_hosFragment3"
             app:destination="@id/hosFragment" />
+        <argument android:name="monthScheduleId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/hosFragment"
@@ -89,9 +91,6 @@
             app:destination="@id/generateNewScheduleFragment"
             app:popUpTo="@id/generateNewScheduleFragment"
             app:popUpToInclusive="true" />
-        <argument
-            android:name="numberOfDaysInMonth"
-            app:argType="integer" />
     </fragment>
     <dialog
         android:id="@+id/addHoToListFragment"
@@ -107,8 +106,5 @@
                 android:name="numberOfDaysInMonth"
                 android:defaultValue="-1" />
         </action>
-        <argument
-            android:name="numberOfDaysInMonth"
-            app:argType="integer" />
     </dialog>
 </navigation>

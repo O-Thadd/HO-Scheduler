@@ -73,12 +73,12 @@ data class Ho(
         val availability =
             enoughBreakBetweenLastAndNextCall && notDuringOutDay && noOutsidePostingActiveCallIncompatibility && isNotTooCloseToResumptionDay && bothPartnersNotStillNew && notYetExitDay
 
-        if(!availability) {
-            Log.e(
-                "my message",
-                "enough break between last and next call is $enoughBreakBetweenLastAndNextCall, not during out day is $notDuringOutDay, no outside posting active call incompatibility is $noOutsidePostingActiveCallIncompatibility, in not too close to resumptionday is $isNotTooCloseToResumptionDay, both patners not still new is $bothPartnersNotStillNew, not yet exit day is $notYetExitDay"
-            )
-        }
+//        if(!availability) {
+//            Log.e(
+//                "my message",
+//                "enough break between last and next call is $enoughBreakBetweenLastAndNextCall, not during out day is $notDuringOutDay, no outside posting active call incompatibility is $noOutsidePostingActiveCallIncompatibility, in not too close to resumptionday is $isNotTooCloseToResumptionDay, both patners not still new is $bothPartnersNotStillNew, not yet exit day is $notYetExitDay"
+//            )
+//        }
 
         return availability
     }

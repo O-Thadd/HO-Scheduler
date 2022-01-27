@@ -1,22 +1,22 @@
 package com.othadd.hoscheduler.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.othadd.hoscheduler.SchedulerApplication
 import com.othadd.hoscheduler.databinding.FragmentHomeBinding
 import com.othadd.hoscheduler.ui.recyclerAdapters.MonthSchedulesRecyclerAdapter
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModel
-import com.othadd.hoscheduler.viewmodel.SchedulerViewModelFactory
+import com.othadd.hoscheduler.viewmodel.HomeViewModel
+import com.othadd.hoscheduler.viewmodel.HomeViewModelFactory
 
 class HomeFragment : Fragment() {
 
-    private val sharedViewModel: SchedulerViewModel by activityViewModels {
-        SchedulerViewModelFactory(
+    private val sharedViewModel: HomeViewModel by activityViewModels {
+        HomeViewModelFactory(
             (activity?.application as SchedulerApplication).database
                 .monthScheduleDao()
         )
@@ -32,8 +32,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val adapter = MonthSchedulesRecyclerAdapter{
-            sharedViewModel.loadSingleMonthSchedule(it)
-            val action = HomeFragmentDirections.actionHomeFragmentToMonthScheduleOverviewFragment()
+//            sharedViewModel.loadSingleMonthSchedule(it)
+            val action = HomeFragmentDirections.actionHomeFragmentToMonthScheduleOverviewFragment(it)
             findNavController().navigate(action)
         }
 

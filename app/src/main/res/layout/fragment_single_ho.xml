@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.othadd.hoscheduler.viewmodel.SchedulerViewModel" />
+            type="com.othadd.hoscheduler.viewmodel.OverviewViewModel" />
 
     </data>
 

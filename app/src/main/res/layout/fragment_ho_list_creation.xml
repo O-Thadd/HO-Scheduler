@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.othadd.hoscheduler.viewmodel.SchedulerViewModel" />
+            type="com.othadd.hoscheduler.viewmodel.HoListCreationViewModel" />
 
         <variable
             name="hoListCreationFragment"
@@ -33,18 +33,6 @@
             app:listData="@{viewModel.newMonthScheduleHoList}"
             tools:itemCount="7"
             tools:listitem="@layout/ho_list_generation_list_item" />
-
-        <Button
-            android:id="@+id/btn_test_add_thirtyHos"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:onClick="@{() -> hoListCreationFragment.testAdd30Hos()}"
-            android:text="Test -  Add 30 HOs"
-            app:layout_constraintBottom_toBottomOf="@id/btn_finish"
-            app:layout_constraintEnd_toStartOf="@id/btn_add"
-            app:layout_constraintTop_toTopOf="@id/btn_finish" />
 
         <Button
             android:id="@+id/btn_add"

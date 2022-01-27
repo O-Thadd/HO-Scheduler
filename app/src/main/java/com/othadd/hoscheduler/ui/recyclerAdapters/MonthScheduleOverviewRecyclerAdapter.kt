@@ -24,7 +24,7 @@ class MonthScheduleOverviewRecyclerAdapter(val onItemClick: (DataItem) -> Unit) 
     ) {
         val list = mutableListOf<DataItem>()
 
-//        the first 'box' on the table is empty so add dummy wardItem
+//        the first 'box' on the table is empty so add dummy DataItem, preferably HoItem since it's the only type that's not clickable
         list.add(DataItem.HoItem(-1, "", mutableListOf("", "")))
 
         for (ward in wardList) {

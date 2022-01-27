@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.othadd.hoscheduler.viewmodel.SchedulerViewModel" />
+            type="com.othadd.hoscheduler.viewmodel.GenerateScheduleViewModel" />
 
         <variable
             name="generateNewScheduleFragment"
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:text="@{viewModel.selectedMonth}" />
+                android:text="@{viewModel.selectedMonthName}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
