@@ -9,7 +9,7 @@ import com.othadd.hoscheduler.utils.ScheduleGeneratingHo
 import com.othadd.hoscheduler.utils.Scheduler
 import java.util.*
 
-class HoListCreationViewModel() : ViewModel(){
+class HoListCreationViewModel(private val monthScheduleDao: MonthScheduleDao) : ViewModel() {
 
     val newMonthScheduleHoList: LiveData<MutableList<ScheduleGeneratingHo>> get() = Scheduler.newMonthScheduleHoList
 
@@ -32,12 +32,12 @@ class HoListCreationViewModel() : ViewModel(){
 }
 
 
-class HoListCreationViewModelFactory :
+class HoListCreationViewModelFactory(private val monthScheduleDao: MonthScheduleDao) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HoListCreationViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return HoListCreationViewModel() as T
+            return HoListCreationViewModel(monthScheduleDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

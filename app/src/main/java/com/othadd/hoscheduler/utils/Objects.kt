@@ -85,16 +85,6 @@ data class Ho(
         return availability
     }
 
-    private fun getLastCallDay(): Int {
-        val callDays = mutableListOf<Int>()
-
-        for ((day, _) in callDaysAndWard) {
-            callDays.add(day)
-        }
-
-        return max(callDays)
-    }
-
     private fun enoughBreakBetweenLastAndNextCall(dayNumber: Int, minimumIntervalBetweenCalls: Int): Boolean{
 
         if (callDaysAndWard.isEmpty())
