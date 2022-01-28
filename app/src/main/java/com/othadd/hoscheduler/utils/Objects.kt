@@ -67,7 +67,9 @@ data class Ho(
         if (!isActiveCall && !isNotWithinThreeDaysOfResumption) {
             isNotTooCloseToResumptionDay = false
         }
-        val bothPartnersNotStillNew = !isStillNew() && !partnerIsStillNew
+        var bothPartnersNotStillNew = true
+        if(isActiveCall && isStillNew() && partnerIsStillNew)
+            bothPartnersNotStillNew = false
         val notYetExitDay = day <= endDay
 
         val availability =
@@ -94,6 +96,10 @@ data class Ho(
     }
 
     private fun enoughBreakBetweenLastAndNextCall(dayNumber: Int, minimumIntervalBetweenCalls: Int): Boolean{
+
+        if (callDaysAndWard.isEmpty())
+            return true
+
         val allPreviousCallDays = mutableListOf<Int>()
         val allFollowingCallDays = mutableListOf<Int>()
 
