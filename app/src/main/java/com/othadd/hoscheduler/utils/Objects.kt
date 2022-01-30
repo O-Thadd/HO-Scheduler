@@ -37,24 +37,14 @@ data class Ho(
     }
 
     fun hasDoneActiveCallBefore(day: Int): Boolean {
-        if (resumptionDay == -33 || activeCallDays.size > 1)
+        if (resumptionDay == -33)
+            return true
+        if (activeCallDays.isEmpty())
+            return false
+        if(activeCallDays.any { it < day })
             return true
 
-//        The if statement above checks for old HOs and new HOs who have had more than
-//        1 active calls and returns true for either case. so code below continues
-//        only if a new and have had 1 or less active calls i.e. 0 or 1 active calls.
-//        The next if statement below then checks for no active calls or if the 1 active call
-//        is the current day and returns false for either case,
-//        and then returns true for any other case, which actually is the case of has had an active,
-//        has had only 1 active call and that active call is not the current day.
-//        So that's what the if statement below does - just in case it looks confusing. The original way
-//        written was cleverly reformatted to the current way by Android Studio.
-//        Checking if the only active call had is the current day is relevant because
-//        the HO may have just been selected and the scheduler is running again on the same day
-//        to get the 2nd ho for the active call, and is then checking this ho, who is the partner,
-//        for having done an active call before. that single active call day(the current day) should not count.
-
-        return !(activeCallDays.isEmpty() || activeCallDays.any { it == day })
+        return false
     }
 
 

@@ -309,6 +309,22 @@ object Scheduler {
             }
         }
 
+//        if no ho found, then re-run with less tight condition(reducing minimum-interval-between-calls requirement by 1)
+        if (availableHos.isEmpty()){
+            for (ho in hoList) {
+                if (ho.isAvailable(
+                        day,
+                        minimumIntervalBetweenCalls - 1,
+                        dayOfWeek,
+                        partnerIsStillNew,
+                        isActiveCall
+                    )
+                ) {
+                    availableHos.add(ho)
+                }
+            }
+        }
+
 //        in case no HO is available, then a placeHolder HO('null HO') is returned
         if (availableHos.isEmpty()) {
             return (Ho("null HO", 200))
