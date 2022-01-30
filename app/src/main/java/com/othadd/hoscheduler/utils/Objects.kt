@@ -14,6 +14,7 @@ data class Ho(
     val activeCallDays: MutableList<Int> = mutableListOf(),
     val weekendCallDays: MutableList<Int> = mutableListOf(),
     val sw4CallDays: MutableList<Int> = mutableListOf(),
+    val wednesdayCallDays: MutableList<Int> = mutableListOf(),
     val callDaysAndWard: MutableList<Pair<Int, String?>> = mutableListOf()
 ) {
     class HoDetail(val dayName: String, val dayNumber: Int, val monthNumber: Int, val ward: String)
@@ -327,7 +328,8 @@ data class UIHo(
     val noOfCalls: Int,
     val noOfActiveCalls: Int,
     val noOfSW4Calls: Int,
-    val noOfWeekendCalls: Int
+    val noOfWeekendCalls: Int,
+    val noOfWednesdayCalls: Int
 )
 
 class HosContainer(val hos: List<Ho>)
@@ -340,7 +342,8 @@ fun HosContainer.asUIHos(): List<UIHo> {
             ho.callDaysAndWard.size,
             ho.activeCallDays.size,
             ho.sw4CallDays.size,
-            ho.weekendCallDays.size
+            ho.weekendCallDays.size,
+            ho.wednesdayCallDays.size
         )
     }
 }

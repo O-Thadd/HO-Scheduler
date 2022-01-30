@@ -37,7 +37,7 @@
                     android:id="@+id/number_of_calls"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/hoName"
                     tools:text="Total Calls: 9" />
@@ -46,8 +46,8 @@
                     android:id="@+id/numberOfActiveCalls"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintStart_toEndOf="@id/number_of_calls"
                     app:layout_constraintTop_toBottomOf="@id/hoName"
                     tools:text="Active Calls: 2" />
@@ -57,8 +57,8 @@
                     android:id="@+id/number_of_SW4_Calls"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintStart_toEndOf="@id/numberOfActiveCalls"
                     app:layout_constraintTop_toBottomOf="@id/hoName"
                     tools:text="SW4: 1" />
@@ -67,9 +67,19 @@
                     android:id="@+id/number_of_weekend_Calls"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     app:layout_constraintStart_toEndOf="@id/number_of_SW4_Calls"
+                    app:layout_constraintTop_toBottomOf="@id/hoName"
+                    tools:text="Weekend: 1" />
+
+                <TextView
+                    android:id="@+id/number_of_wednesday_Calls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    app:layout_constraintStart_toEndOf="@id/number_of_weekend_Calls"
                     app:layout_constraintTop_toBottomOf="@id/hoName"
                     tools:text="Weekend: 1" />
 

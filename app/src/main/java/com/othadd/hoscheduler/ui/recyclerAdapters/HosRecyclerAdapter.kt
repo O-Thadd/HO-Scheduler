@@ -38,6 +38,7 @@ class HosRecyclerAdapter(val onItemClicked: (UIHo) -> Unit) : MyRecyclerViewAdap
                  numberOfActiveCalls.text = binding.root.resources.getString(R.string.number_of_active_calls, ho.noOfActiveCalls)
                  numberOfSW4Calls.text = binding.root.resources.getString(R.string.number_of_SW4_calls, ho.noOfSW4Calls)
                  numberOfWeekendCalls.text = binding.root.resources.getString(R.string.number_of_weekend_calls, ho.noOfWeekendCalls)
+                 numberOfWednesdayCalls.text = binding.root.resources.getString(R.string.number_of_wednesday_calls, ho.noOfWednesdayCalls)
              }
          }
     }

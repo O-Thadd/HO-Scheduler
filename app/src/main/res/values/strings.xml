@@ -11,6 +11,7 @@
     <string name="number_of_LW_calls">LW: %1d</string>
     <string name="number_of_GE_calls">GE: %1d</string>
     <string name="number_of_SW4_calls">SW4: %1d</string>
+    <string name="number_of_wednesday_calls">Wednesday: %1d</string>
     <string name="number_of_weekend_calls">Weekend: %1d</string>
     <string name="number_of_active_calls">Active Calls: %1d</string>
     <string name="resumption_day">Resuming: %1d</string>

@@ -41,23 +41,21 @@ object Scheduler {
         hoOutsidePostingDays.clear()
     }
 
-    fun updateScheduleGeneratingHo(hoNumber: Int, name: String, resumptionDate: Int, exitDay: Int){
+    fun updateScheduleGeneratingHo(hoNumber: Int, name: String, resumptionDate: Int, exitDay: Int) {
         val ho = _newMonthScheduleHoList.value?.find { it.number == hoNumber }
 
         ho?.outDays?.addAll(hoOffDays)
         ho?.outSidePostingDays?.addAll(hoOutsidePostingDays)
 
-        ho?.let { _newMonthScheduleHoList.value?.add(it) }
-
         hoOffDays.clear()
         hoOutsidePostingDays.clear()
     }
 
-    fun setHo(hoNumber: Int){
+    fun setHo(hoNumber: Int) {
         _ho.value = _newMonthScheduleHoList.value?.find { it.number == hoNumber }
     }
 
-    fun clearSetHo(){
+    fun clearSetHo() {
         _ho.value = null
     }
 
@@ -123,17 +121,20 @@ object Scheduler {
 
         val allDaysInMonth = getListOfDays(year, monthNumber)
         val weekendDays: MutableList<Int> = mutableListOf()
+        val wednesdays: MutableList<Int> = mutableListOf()
         val weekdays: MutableList<Int> = mutableListOf()
 
         for (day in allDaysInMonth) {
             val calendarObjectForThisDay = Calendar.getInstance()
             calendarObjectForThisDay.set(year, monthNumber, day)
-            if (calendarObjectForThisDay.get(Calendar.DAY_OF_WEEK) == 1 || (calendarObjectForThisDay.get(
-                    Calendar.DAY_OF_WEEK
-                ) == 7)
+            val dayOfWeekNumber = calendarObjectForThisDay.get(Calendar.DAY_OF_WEEK)
+            if (dayOfWeekNumber == 1 || (dayOfWeekNumber == 7)
             ) {
                 weekendDays.add(day)
-            } else weekdays.add(day)
+            } else if (dayOfWeekNumber == 4) {
+                wednesdays.add(day)
+            } else
+                weekdays.add(day)
         }
 
         generateSchedules(
@@ -145,6 +146,17 @@ object Scheduler {
             days,
             wards, minimumIntervalBetweenCalls
         )
+
+        generateSchedules(
+            monthNumber,
+            year,
+            Ward.ACTIVE_WARDS_STRING,
+            wednesdays,
+            hos,
+            days,
+            wards, minimumIntervalBetweenCalls
+        )
+
         generateSchedules(
             monthNumber,
             year,
@@ -165,6 +177,18 @@ object Scheduler {
             wards,
             minimumIntervalBetweenCalls
         )
+
+        generateSchedules(
+            monthNumber,
+            year,
+            Ward.SW4_WARD_STRING,
+            wednesdays,
+            hos,
+            days,
+            wards,
+            minimumIntervalBetweenCalls
+        )
+
         generateSchedules(
             monthNumber,
             year,
@@ -183,6 +207,16 @@ object Scheduler {
             hos,
             days, wards, minimumIntervalBetweenCalls
         )
+
+        generateSchedules(
+            monthNumber,
+            year,
+            Ward.NON_ACTIVE_WARDS_STRING,
+            wednesdays,
+            hos,
+            days, wards, minimumIntervalBetweenCalls
+        )
+
         generateSchedules(
             monthNumber,
             year,
@@ -231,6 +265,7 @@ object Scheduler {
                 calendarObjectForThisDay.get(Calendar.DAY_OF_WEEK) == 1 || (calendarObjectForThisDay.get(
                     Calendar.DAY_OF_WEEK
                 ) == 7)
+            val isWednesday = calendarObjectForThisDay.get(Calendar.DAY_OF_WEEK) == 4
 
             for ((wardNumber, wardName) in wardList) {
                 val isActiveCall = wardName == Ward.LABOUR_WARD || wardName == Ward.GYNEA_EMERGENCY
@@ -241,8 +276,9 @@ object Scheduler {
                     if (isActiveCall) {
                         val partner =
                             hos?.find { ho -> ho.callDaysAndWard.any { it.first == dayNumber && it.second == wardName } }
-                        if (partner != null){
-                                partnerHasDoneActiveCallBefore = partner.hasDoneActiveCallBefore(dayNumber)
+                        if (partner != null) {
+                            partnerHasDoneActiveCallBefore =
+                                partner.hasDoneActiveCallBefore(dayNumber)
                         }
                     }
 
@@ -268,6 +304,9 @@ object Scheduler {
                         }
                         if (wardName == Ward.SW4) {
                             ho.sw4CallDays.add(dayNumber)
+                        }
+                        if (isWednesday){
+                            ho.wednesdayCallDays.add(dayNumber)
                         }
 
 
@@ -332,7 +371,7 @@ object Scheduler {
         }
 
 //        if no ho found, then re-run with less tight condition(reducing minimum-interval-between-calls requirement by 1)
-        if (availableHos.isEmpty()){
+        if (availableHos.isEmpty()) {
             for (ho in hoList) {
                 if (ho.isAvailable(
                         day,

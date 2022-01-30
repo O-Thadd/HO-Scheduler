@@ -108,9 +108,9 @@ class AddHoToListDialogFragment : DialogFragment() {
             if (!isChecked) newHoResumptionDateEditText.text?.clear()
             newHoResumptionDateTextField.isEnabled = isChecked
         }
-        if (sharedViewModel.updatingHo && sharedViewModel.ho.value?.resumptionDay != -33){
-                switchNewHO.isChecked = true
-                newHoResumptionDateEditText.setText(sharedViewModel.ho.value?.resumptionDay.toString())
+        if (sharedViewModel.updatingHo && sharedViewModel.ho.value?.resumptionDay != -33) {
+            switchNewHO.isChecked = true
+            newHoResumptionDateEditText.setText(sharedViewModel.ho.value?.resumptionDay.toString())
         }
 
         val switchExitingHO = binding.switchExitingHO
@@ -121,7 +121,7 @@ class AddHoToListDialogFragment : DialogFragment() {
             if (!isChecked) exitingHoLastDayEditText.text?.clear()
             exitingHoLastDayTextField.isEnabled = isChecked
         }
-        if (sharedViewModel.updatingHo && sharedViewModel.ho.value?.exitDay != 33){
+        if (sharedViewModel.updatingHo && sharedViewModel.ho.value?.exitDay != 33) {
             switchExitingHO.isChecked = true
             exitingHoLastDayEditText.setText(sharedViewModel.ho.value?.exitDay.toString())
         }
@@ -136,12 +136,54 @@ class AddHoToListDialogFragment : DialogFragment() {
 
         if (name.isBlank()) return
 
-        if(sharedViewModel.updatingHo){
-            val hoNumber = sharedViewModel.ho.value?.number
+        if (sharedViewModel.updatingHo) {
+            val hoNumber = (sharedViewModel.ho.value?.number)!!
 
+//            if there is a resumption date
             if (thereIsResumptionDate) {
                 val resumptionDate = resumptionDateString.toInt()
-                sharedViewModel.updateScheduleGeneratingHoList(name, resumptionDate = resumptionDate)
+                sharedViewModel.updateScheduleGeneratingHoList(
+                    hoNumber,
+                    name,
+                    resumptionDate = resumptionDate
+                )
+            }
+
+//        if there is an exit date
+            else if (thereIsExitingDate) {
+                val exitingDate = exitingDateString.toInt()
+                sharedViewModel.updateScheduleGeneratingHoList(
+                    hoNumber,
+                    name,
+                    exitDay = exitingDate
+                )
+            }
+
+//        if there is both a resumption day and an exit day
+            else if (thereIsResumptionDate && thereIsExitingDate) {
+                val resumptionDate = resumptionDateString.toInt()
+                val exitingDate = exitingDateString.toInt()
+                sharedViewModel.updateScheduleGeneratingHoList(
+                    hoNumber,
+                    name,
+                    resumptionDate = resumptionDate,
+                    exitDay = exitingDate
+                )
+            }
+
+//        if there is neither a resumption day nor an exit day
+            else sharedViewModel.updateScheduleGeneratingHoList(hoNumber, name)
+        }
+
+        else {
+
+//            if there is a resumption date
+            if (thereIsResumptionDate) {
+                val resumptionDate = resumptionDateString.toInt()
+                sharedViewModel.updateScheduleGeneratingHoList(
+                    name,
+                    resumptionDate = resumptionDate
+                )
             }
 
 //        if there is an exit date
@@ -164,31 +206,8 @@ class AddHoToListDialogFragment : DialogFragment() {
 //        if there is neither a resumption day nor an exit day
             else sharedViewModel.updateScheduleGeneratingHoList(name)
         }
-//        if there is a resumption date
-        if (thereIsResumptionDate) {
-            val resumptionDate = resumptionDateString.toInt()
-            sharedViewModel.updateScheduleGeneratingHoList(name, resumptionDate = resumptionDate)
-        }
 
-//        if there is an exit date
-        else if (thereIsExitingDate) {
-            val exitingDate = exitingDateString.toInt()
-            sharedViewModel.updateScheduleGeneratingHoList(name, exitDay = exitingDate)
-        }
-
-//        if there is both a resumption day and an exit day
-        else if (thereIsResumptionDate && thereIsExitingDate) {
-            val resumptionDate = resumptionDateString.toInt()
-            val exitingDate = exitingDateString.toInt()
-            sharedViewModel.updateScheduleGeneratingHoList(
-                name,
-                resumptionDate = resumptionDate,
-                exitDay = exitingDate
-            )
-        }
-
-//        if there is neither a resumption day nor an exit day
-        else sharedViewModel.updateScheduleGeneratingHoList(name)
+        sharedViewModel.clearSetHo()
 
         val action =
             AddHoToListDialogFragmentDirections.actionAddHoToListFragmentToHoListCreationFragment()
