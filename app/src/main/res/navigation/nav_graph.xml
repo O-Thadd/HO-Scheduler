@@ -91,6 +91,9 @@
             app:destination="@id/generateNewScheduleFragment"
             app:popUpTo="@id/generateNewScheduleFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_hoListCreationFragment_to_importHosDialogFragment"
+            app:destination="@id/importHosDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/addHoToListFragment"
@@ -106,5 +109,16 @@
                 android:name="numberOfDaysInMonth"
                 android:defaultValue="-1" />
         </action>
+    </dialog>
+    <dialog
+        android:id="@+id/importHosDialogFragment"
+        android:name="com.othadd.hoscheduler.ui.ImportHosDialogFragment"
+        android:label="fragment_import_hos_dialog"
+        tools:layout="@layout/fragment_import_hos_dialog" >
+        <action
+            android:id="@+id/action_importHosDialogFragment_to_hoListCreationFragment"
+            app:destination="@id/hoListCreationFragment"
+            app:popUpTo="@id/hoListCreationFragment"
+            app:popUpToInclusive="true" />
     </dialog>
 </navigation>

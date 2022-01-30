@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.othadd.hoscheduler.SchedulerApplication
 import com.othadd.hoscheduler.databinding.DialogFragmentAddHoToListBinding
 import com.othadd.hoscheduler.ui.recyclerAdapters.DaysSelectionRecyclerAdapter
 import com.othadd.hoscheduler.viewmodel.HoListCreationViewModel
@@ -23,7 +24,10 @@ class AddHoToListDialogFragment : DialogFragment() {
     }
 
     private val sharedViewModel: HoListCreationViewModel by activityViewModels {
-        HoListCreationViewModelFactory()
+        HoListCreationViewModelFactory(
+            (activity?.application as SchedulerApplication).database
+                .monthScheduleDao()
+        )
     }
 
     lateinit var binding: DialogFragmentAddHoToListBinding

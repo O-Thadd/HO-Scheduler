@@ -1,9 +1,7 @@
 package com.othadd.hoscheduler.utils
 
-import android.util.Log
 import com.othadd.hoscheduler.ui.recyclerAdapters.MonthScheduleOverviewRecyclerAdapter.DataItem.*
 import java.util.*
-import java.util.Collections.max
 import kotlin.collections.HashMap
 
 data class Ho(
@@ -12,10 +10,10 @@ data class Ho(
     val outDays: List<Int> = listOf(),
     val resumptionDay: Int = -33,
     val endDay: Int = 33,
+    val outSidePostingDays: List<Int> = listOf(),
     val activeCallDays: MutableList<Int> = mutableListOf(),
     val weekendCallDays: MutableList<Int> = mutableListOf(),
     val sw4CallDays: MutableList<Int> = mutableListOf(),
-    val outSidePostingDays: List<Int> = listOf(),
     val callDaysAndWard: MutableList<Pair<Int, String?>> = mutableListOf()
 ) {
     class HoDetail(val dayName: String, val dayNumber: Int, val monthNumber: Int, val ward: String)
@@ -38,8 +36,25 @@ data class Ho(
         return typicalNumberOfDaysInMonth - outDays.size
     }
 
-    fun isStillNew(): Boolean {
-        return resumptionDay != -33 && activeCallDays.isEmpty()
+    fun hasDoneActiveCallBefore(day: Int): Boolean {
+        if (resumptionDay == -33 || activeCallDays.size > 1)
+            return true
+
+//        The if statement above checks for old HOs and new HOs who have had more than
+//        1 active calls and returns true for either case. so code below continues
+//        only if a new and have had 1 or less active calls i.e. 0 or 1 active calls.
+//        The next if statement below then checks for no active calls or if the 1 active call
+//        is the current day and returns false for either case,
+//        and then returns true for any other case, which actually is the case of has had an active,
+//        has had only 1 active call and that active call is not the current day.
+//        So that's what the if statement below does - just in case it looks confusing. The original way
+//        written was cleverly reformatted to the current way by Android Studio.
+//        Checking if the only active call had is the current day is relevant because
+//        the HO may have just been selected and the scheduler is running again on the same day
+//        to get the 2nd ho for the active call, and is then checking this ho, who is the partner,
+//        for having done an active call before. that single active call day(the current day) should not count.
+
+        return !(activeCallDays.isEmpty() || activeCallDays.any { it == day })
     }
 
 
@@ -47,10 +62,11 @@ data class Ho(
         day: Int,
         minimumIntervalBetweenCalls: Int,
         dayOfWeek: String,
-        partnerIsStillNew: Boolean,
+        partnerHasDoneActiveCallBefore: Boolean,
         isActiveCall: Boolean
     ): Boolean {
-        val enoughBreakBetweenLastAndNextCall = enoughBreakBetweenLastAndNextCall(day, minimumIntervalBetweenCalls)
+        val enoughBreakBetweenLastAndNextCall =
+            enoughBreakBetweenLastAndNextCall(day, minimumIntervalBetweenCalls)
         val notDuringOutDay = !(outDays.any { it == day })
         var noOutsidePostingActiveCallIncompatibility = true
         val currentlyOnOutsidePosting = outSidePostingDays.any { it == day }
@@ -68,7 +84,7 @@ data class Ho(
             isNotTooCloseToResumptionDay = false
         }
         var bothPartnersNotStillNew = true
-        if(isActiveCall && isStillNew() && partnerIsStillNew)
+        if (isActiveCall && !hasDoneActiveCallBefore(day) && !partnerHasDoneActiveCallBefore)
             bothPartnersNotStillNew = false
         val notYetExitDay = day <= endDay
 
@@ -85,7 +101,10 @@ data class Ho(
         return availability
     }
 
-    private fun enoughBreakBetweenLastAndNextCall(dayNumber: Int, minimumIntervalBetweenCalls: Int): Boolean{
+    private fun enoughBreakBetweenLastAndNextCall(
+        dayNumber: Int,
+        minimumIntervalBetweenCalls: Int
+    ): Boolean {
 
         if (callDaysAndWard.isEmpty())
             return true
@@ -93,14 +112,12 @@ data class Ho(
         val allPreviousCallDays = mutableListOf<Int>()
         val allFollowingCallDays = mutableListOf<Int>()
 
-        for ((day, _) in callDaysAndWard){
-            if(day < dayNumber){
+        for ((day, _) in callDaysAndWard) {
+            if (day < dayNumber) {
                 allPreviousCallDays.add(day)
-            }
-            else if(day > dayNumber){
+            } else if (day > dayNumber) {
                 allFollowingCallDays.add(day)
-            }
-            else {
+            } else {
                 return false
             }
         }
@@ -111,14 +128,14 @@ data class Ho(
         val mostRecentCallDay = allPreviousCallDays.maxOrNull()
         val followingCallDay = allFollowingCallDays.minOrNull()
 
-        enoughBreakSinceLastCall = if (mostRecentCallDay != null){
+        enoughBreakSinceLastCall = if (mostRecentCallDay != null) {
             val daysSinceLastCall = dayNumber - mostRecentCallDay
             daysSinceLastCall >= minimumIntervalBetweenCalls
         } else {
             true
         }
 
-        enoughBreakUntilNextCall = if (followingCallDay != null){
+        enoughBreakUntilNextCall = if (followingCallDay != null) {
             val daysUntilNextCall = followingCallDay - dayNumber
             daysUntilNextCall >= minimumIntervalBetweenCalls
         } else {
@@ -299,6 +316,19 @@ fun ScheduleGeneratingHoContainer.asHos(): List<Ho> {
             outSidePostingDays = it.outSidePostingDays
         )
     }
+}
+
+fun List<Ho>.prepForNewSchedule(): MutableList<ScheduleGeneratingHo> {
+
+//    the map creates for each ho, a scheduleGeneratingHo with appropriate parameters and updates the list properties.
+//    so the map returns a list of scheduleGeneratingHo upon which the toMutableList() method is called which is in turn then returned.
+    return this.map {
+        val ho = ScheduleGeneratingHo(it.name, it.number, it.resumptionDay, it.endDay)
+        ho.outDays.addAll(it.outDays)
+        ho.outSidePostingDays.addAll(it.outSidePostingDays)
+        ho
+    }.toMutableList()
+
 }
 
 data class UIHo(

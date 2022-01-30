@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.othadd.hoscheduler.SchedulerApplication
 import com.othadd.hoscheduler.databinding.FragmentHoListCreationBinding
 import com.othadd.hoscheduler.ui.recyclerAdapters.HoListCreationRecyclerAdapter
 import com.othadd.hoscheduler.viewmodel.HoListCreationViewModel
@@ -16,7 +17,10 @@ class HoListCreationFragment : Fragment() {
 
 
     private val sharedViewModel: HoListCreationViewModel by activityViewModels {
-        HoListCreationViewModelFactory()
+        HoListCreationViewModelFactory(
+            (activity?.application as SchedulerApplication).database
+                .monthScheduleDao()
+        )
     }
 
     lateinit var binding: FragmentHoListCreationBinding
@@ -42,9 +46,14 @@ class HoListCreationFragment : Fragment() {
         return binding.root
     }
 
+    fun importHosFromExistingSchedule() {
+        sharedViewModel.loadSchedules()
+        val action =
+            HoListCreationFragmentDirections.actionHoListCreationFragmentToImportHosDialogFragment()
+        findNavController().navigate(action)
+    }
 
     fun addNewHoToList() {
-
         val action =
             HoListCreationFragmentDirections.actionHoListCreationFragmentToAddHoToListFragment()
         findNavController().navigate(action)

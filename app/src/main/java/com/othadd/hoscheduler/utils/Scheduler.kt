@@ -212,15 +212,15 @@ object Scheduler {
 
             for ((wardNumber, wardName) in wardList) {
                 val isActiveCall = wardName == Ward.LABOUR_WARD || wardName == Ward.GYNEA_EMERGENCY
-                var partnerIsStillNew = false
+                var partnerHasDoneActiveCallBefore = true
                 val numberOfHosNeeded = if (isActiveCall) 2 else 1
                 for (i in 1..numberOfHosNeeded) {
 
                     if (isActiveCall) {
                         val partner =
                             hos?.find { ho -> ho.callDaysAndWard.any { it.first == dayNumber && it.second == wardName } }
-                        if (partner != null && partner.isStillNew()) {
-                            partnerIsStillNew = true
+                        if (partner != null){
+                                partnerHasDoneActiveCallBefore = partner.hasDoneActiveCallBefore(dayNumber)
                         }
                     }
 
@@ -230,7 +230,7 @@ object Scheduler {
                             dayNumber,
                             minimumIntervalBetweenCalls,
                             dayOfWeek,
-                            partnerIsStillNew,
+                            partnerHasDoneActiveCallBefore,
                             isActiveCall
                         )
                     }
@@ -342,6 +342,10 @@ object Scheduler {
             days.add(day)
         }
         return days
+    }
+
+    fun addImportedHos(hos: MutableList<Ho>) {
+        _newMonthScheduleHoList.value?.addAll(hos.prepForNewSchedule())
     }
 
     init {

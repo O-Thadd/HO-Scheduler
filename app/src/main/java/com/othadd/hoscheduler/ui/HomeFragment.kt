@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val adapter = MonthSchedulesRecyclerAdapter{
-//            sharedViewModel.loadSingleMonthSchedule(it)
             val action = HomeFragmentDirections.actionHomeFragmentToMonthScheduleOverviewFragment(it)
             findNavController().navigate(action)
         }
