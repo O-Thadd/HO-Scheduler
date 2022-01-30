@@ -48,7 +48,7 @@ class MonthSchedulesRecyclerAdapter(private val onClickItem: (Int) -> Unit) : My
                     monthSchedule.year.toString()
                 )
                 monthScheduleNumberOfHos.text = root.context.getString(
-                    R.string.month_schedule_no_of_hos,
+                    R.string.number_of_hos,
                     monthSchedule.hos.size
                 )
             }

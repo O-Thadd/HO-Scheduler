@@ -35,12 +35,22 @@
             tools:itemCount="7"
             tools:listitem="@layout/ho_list_generation_list_item" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/btn_finish"
+            app:layout_constraintBottom_toBottomOf="@id/btn_finish"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:text="@{@string/number_of_hos(viewModel.newMonthScheduleHoList.size())}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            tools:text="30 Hos"/>
+
         <Button
             android:id="@+id/btn_import"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:text="Import"
             android:onClick="@{() -> hoListCreationFragment.importHosFromExistingSchedule()}"
             app:layout_constraintBottom_toBottomOf="@id/btn_finish"

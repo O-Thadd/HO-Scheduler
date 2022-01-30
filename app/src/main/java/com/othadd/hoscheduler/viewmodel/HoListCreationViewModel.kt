@@ -7,15 +7,19 @@ import com.othadd.hoscheduler.utils.Ho
 import com.othadd.hoscheduler.utils.ScheduleGeneratingHo
 import com.othadd.hoscheduler.utils.Scheduler
 import kotlinx.coroutines.launch
-import java.time.Month
 
 class HoListCreationViewModel(private val monthScheduleDao: MonthScheduleDao) : ViewModel() {
+
+    val ho: LiveData<ScheduleGeneratingHo?> get() = Scheduler.ho
 
     private var _existingSchedules = MutableLiveData<List<MonthSchedule>>()
     val existingSchedules: LiveData<List<MonthSchedule>> get() = _existingSchedules
 
     val newMonthScheduleHoList: LiveData<MutableList<ScheduleGeneratingHo>> get() = Scheduler.newMonthScheduleHoList
 
+    var daysInMonthForNewSchedule = Scheduler.daysInMonthForNewSchedule
+
+    var updatingHo = false
 
     fun updateOffDay(dayNumber: Int) {
         Scheduler.updateOffDay(dayNumber)
@@ -25,11 +29,20 @@ class HoListCreationViewModel(private val monthScheduleDao: MonthScheduleDao) : 
         Scheduler.updateHoOutsidePostingDays(dayNumber)
     }
 
-    var daysInMonthForNewSchedule = Scheduler.daysInMonthForNewSchedule
+    fun updateScheduleGeneratingHoList(name: String, resumptionDate: Int = -33, exitDay: Int = 33){
+        Scheduler.addNewScheduleGeneratingHo(name, resumptionDate, exitDay)
+    }
 
+    fun updateScheduleGeneratingHoList(hoNumber: Int, name: String, resumptionDate: Int = -33, exitDay: Int = 33){
+        Scheduler.updateScheduleGeneratingHo(hoNumber, name, resumptionDate, exitDay)
+    }
 
-    fun addScheduleGeneratingHo(name: String, resumptionDate: Int = -33, exitDay: Int = 33) {
-        Scheduler.addScheduleGeneratingHo(name, resumptionDate, exitDay)
+    fun setHo(hoNumber: Int){
+        Scheduler.setHo(hoNumber)
+    }
+
+    fun clearSetHo(){
+        Scheduler.clearSetHo()
     }
 
     fun addImportedHos(scheduleId: Int){

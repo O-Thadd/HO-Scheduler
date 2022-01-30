@@ -8,7 +8,7 @@ import com.othadd.hoscheduler.databinding.HoListGenerationListItemBinding
 import com.othadd.hoscheduler.utils.MyRecyclerViewAdapter
 import com.othadd.hoscheduler.utils.ScheduleGeneratingHo
 
-class HoListCreationRecyclerAdapter : MyRecyclerViewAdapter() {
+class HoListCreationRecyclerAdapter(val onItemClick: (Int) -> Unit) : MyRecyclerViewAdapter() {
 
     override fun updateDataList(list: List<Any>) {
         dataList = list
@@ -16,11 +16,19 @@ class HoListCreationRecyclerAdapter : MyRecyclerViewAdapter() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoListCreationViewHolder {
-        return HoListCreationViewHolder(HoListGenerationListItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return HoListCreationViewHolder(
+            HoListGenerationListItemBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                )
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as HoListCreationViewHolder).bind(dataList[position] as ScheduleGeneratingHo)
+        val scheduleGeneratingHo = dataList[position] as ScheduleGeneratingHo
+        (holder as HoListCreationViewHolder).bind(scheduleGeneratingHo)
+        holder.itemView.setOnClickListener { onItemClick(scheduleGeneratingHo.number) }
     }
 
 
@@ -28,11 +36,30 @@ class HoListCreationRecyclerAdapter : MyRecyclerViewAdapter() {
         return dataList.size
     }
 
-    class HoListCreationViewHolder(val binding: HoListGenerationListItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(ho: ScheduleGeneratingHo){
+    class HoListCreationViewHolder(val binding: HoListGenerationListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(ho: ScheduleGeneratingHo) {
             binding.apply {
                 hoName.text = ho.name
-                numberOfOffDays.text = binding.root.context.getString(R.string.number_of_off_days, ho.outDays.size)
+                numberOfOffDays.text =
+                    if (ho.outDays.isEmpty()) "" else binding.root.context.getString(
+                        R.string.number_of_off_days,
+                        ho.outDays.size
+                    )
+                resumptionDay.text =
+                    if (ho.resumptionDay == -33) "" else binding.root.context.getString(
+                        R.string.resumption_day,
+                        ho.resumptionDay
+                    )
+                exitDay.text = if (ho.exitDay == 33) "" else binding.root.context.getString(
+                    R.string.exit_day,
+                    ho.exitDay
+                )
+                numberOfOutsidePostingDays.text =
+                    if (ho.outSidePostingDays.isEmpty()) "" else binding.root.context.getString(
+                        R.string.number_of_outside_posting_days,
+                        ho.outSidePostingDays.size
+                    )
             }
         }
     }

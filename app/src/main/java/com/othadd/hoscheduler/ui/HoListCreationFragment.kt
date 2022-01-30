@@ -34,7 +34,11 @@ class HoListCreationFragment : Fragment() {
     ): View? {
         binding = FragmentHoListCreationBinding.inflate(inflater, container, false)
 
-        adapter = HoListCreationRecyclerAdapter()
+        adapter = HoListCreationRecyclerAdapter{
+            sharedViewModel.updatingHo = true
+            sharedViewModel.setHo(it)
+            findNavController().navigate(HoListCreationFragmentDirections.actionHoListCreationFragmentToAddHoToListFragment())
+        }
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner

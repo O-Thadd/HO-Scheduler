@@ -14,8 +14,8 @@ class DaysSelectionRecyclerAdapter(val onDayClicked: (Int) -> Unit) : MyRecycler
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OffDaysSelectionViewHolder {
-        return OffDaysSelectionViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysSelectionViewHolder {
+        return DaysSelectionViewHolder(
             DialogCreateHoOffdaysSelectionListItemBinding.inflate(
                 LayoutInflater.from(parent.context)
             )
@@ -23,11 +23,11 @@ class DaysSelectionRecyclerAdapter(val onDayClicked: (Int) -> Unit) : MyRecycler
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val day = dataList[position] as Int
-        (holder as OffDaysSelectionViewHolder).bind(day)
+        val daySelectionItem = dataList[position] as DaySelectionItem
+        (holder as DaysSelectionViewHolder).bind(daySelectionItem)
         holder.itemView.setOnClickListener {
             holder.alter()
-            onDayClicked(day)
+            onDayClicked(daySelectionItem.date)
         }
     }
 
@@ -35,11 +35,15 @@ class DaysSelectionRecyclerAdapter(val onDayClicked: (Int) -> Unit) : MyRecycler
         return dataList.size
     }
 
-    class OffDaysSelectionViewHolder(val binding: DialogCreateHoOffdaysSelectionListItemBinding) :
+    class DaysSelectionViewHolder(val binding: DialogCreateHoOffdaysSelectionListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         var textColourIsBlack = true
-        fun bind(date: Int) {
-            binding.dayNumberText.text = date.toString()
+
+        fun bind(daySelectionItem: DaySelectionItem) {
+            binding.dayNumberText.text = daySelectionItem.date.toString()
+            binding.dayNumberText.setTextColor(if (daySelectionItem.selected) binding.root.context.getColor(R.color.green) else binding.root.context.getColor(R.color.black))
+            textColourIsBlack = !daySelectionItem.selected
         }
 
         fun alter() {
@@ -47,4 +51,6 @@ class DaysSelectionRecyclerAdapter(val onDayClicked: (Int) -> Unit) : MyRecycler
             binding.dayNumberText.setTextColor(if (textColourIsBlack) binding.root.context.getColor(R.color.black) else binding.root.context.getColor(R.color.green))
         }
     }
+
+    class DaySelectionItem(val date: Int, var selected: Boolean = false)
 }

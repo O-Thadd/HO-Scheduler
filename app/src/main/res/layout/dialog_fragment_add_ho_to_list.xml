@@ -39,7 +39,8 @@
                     android:id="@+id/edit_text_hoName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName|textCapWords" />
+                    android:inputType="textPersonName|textCapWords"
+                    android:text="@{viewModel.ho.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:onClick="@{() -> addHoToListDialogFragment.onAddButtonClicked()}"
-                android:text="Add"
+                android:text="Add/Update"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_outsidePostingDaysSelection" />

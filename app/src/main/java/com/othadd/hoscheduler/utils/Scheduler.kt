@@ -10,6 +10,8 @@ object Scheduler {
     private var _newMonthScheduleHoList = MutableLiveData<MutableList<ScheduleGeneratingHo>>()
     val newMonthScheduleHoList: LiveData<MutableList<ScheduleGeneratingHo>> get() = _newMonthScheduleHoList
 
+    private var _ho = MutableLiveData<ScheduleGeneratingHo?>()
+    val ho: LiveData<ScheduleGeneratingHo?> get() = _ho
 
     private var hoOffDays = mutableListOf<Int>()
     fun updateOffDay(dayNumber: Int) {
@@ -25,7 +27,7 @@ object Scheduler {
         else hoOutsidePostingDays.add(dayNumber)
     }
 
-    fun addScheduleGeneratingHo(name: String, resumptionDate: Int, exitDay: Int) {
+    fun addNewScheduleGeneratingHo(name: String, resumptionDate: Int, exitDay: Int) {
         val number = (_newMonthScheduleHoList.value?.size?.plus(1))
 
         val ho = number?.let { ScheduleGeneratingHo(name, it, resumptionDate, exitDay) }
@@ -37,6 +39,26 @@ object Scheduler {
 
         hoOffDays.clear()
         hoOutsidePostingDays.clear()
+    }
+
+    fun updateScheduleGeneratingHo(hoNumber: Int, name: String, resumptionDate: Int, exitDay: Int){
+        val ho = _newMonthScheduleHoList.value?.find { it.number == hoNumber }
+
+        ho?.outDays?.addAll(hoOffDays)
+        ho?.outSidePostingDays?.addAll(hoOutsidePostingDays)
+
+        ho?.let { _newMonthScheduleHoList.value?.add(it) }
+
+        hoOffDays.clear()
+        hoOutsidePostingDays.clear()
+    }
+
+    fun setHo(hoNumber: Int){
+        _ho.value = _newMonthScheduleHoList.value?.find { it.number == hoNumber }
+    }
+
+    fun clearSetHo(){
+        _ho.value = null
     }
 
 

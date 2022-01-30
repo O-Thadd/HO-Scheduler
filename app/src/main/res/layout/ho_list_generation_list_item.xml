@@ -37,11 +37,40 @@
                     android:id="@+id/numberOfOffDays"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     app:layout_constraintStart_toStartOf="@id/hoName"
                     app:layout_constraintTop_toBottomOf="@id/hoName"
                     tools:text="7 off-days" />
 
+                <TextView
+                    android:id="@+id/resumptionDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    app:layout_constraintStart_toEndOf="@id/numberOfOffDays"
+                    app:layout_constraintTop_toBottomOf="@id/hoName"
+                    tools:text="7 off-days" />
+
+                <TextView
+                    android:id="@+id/exitDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    app:layout_constraintStart_toEndOf="@id/resumptionDay"
+                    app:layout_constraintTop_toBottomOf="@id/hoName"
+                    tools:text="7 off-days" />
+
+                <TextView
+                    android:id="@+id/numberOfOutsidePostingDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    app:layout_constraintStart_toEndOf="@id/exitDay"
+                    app:layout_constraintTop_toBottomOf="@id/hoName"
+                    tools:text="7 off-days" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
