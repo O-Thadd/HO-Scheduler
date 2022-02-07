@@ -48,13 +48,21 @@ data class Ho(
         return false
     }
 
+    private fun doesNotHaveMoreCallsThanMostOthers(numberOfHoCallsList: MutableList<Int>): Boolean{
+        val numberOfCalls = callDaysAndWard.size
+        val numberOfHosWithSameNumberOfCallsOrMore = numberOfHoCallsList.count { it >= numberOfCalls }
+//        check if up to half of total HOs have same number of calls or more
+        return numberOfHosWithSameNumberOfCallsOrMore > numberOfHoCallsList.size / 2
+    }
+
 
     fun isAvailable(
         day: Int,
         minimumIntervalBetweenCalls: Int,
         dayOfWeek: String,
         partnerHasDoneActiveCallBefore: Boolean,
-        isActiveCall: Boolean
+        isActiveCall: Boolean,
+        numberOfHoCallsList: MutableList<Int>
     ): Boolean {
         val enoughBreakBetweenLastAndNextCall =
             enoughBreakBetweenLastAndNextCall(day, minimumIntervalBetweenCalls)
@@ -78,9 +86,10 @@ data class Ho(
         if (isActiveCall && !hasDoneActiveCallBefore(day) && !partnerHasDoneActiveCallBefore)
             bothPartnersNotStillNew = false
         val notYetExitDay = day <= endDay
+        val doesNotHaveMoreCallsThanMostOthers = doesNotHaveMoreCallsThanMostOthers(numberOfHoCallsList)
 
         val availability =
-            enoughBreakBetweenLastAndNextCall && notDuringOutDay && noOutsidePostingActiveCallIncompatibility && isNotTooCloseToResumptionDay && bothPartnersNotStillNew && notYetExitDay
+            enoughBreakBetweenLastAndNextCall && notDuringOutDay && noOutsidePostingActiveCallIncompatibility && isNotTooCloseToResumptionDay && bothPartnersNotStillNew && notYetExitDay && doesNotHaveMoreCallsThanMostOthers
 
 //        if(!availability) {
 //            Log.e(
@@ -286,10 +295,10 @@ data class Day(
 }
 
 data class ScheduleGeneratingHo(
-    val name: String,
+    var name: String,
     val number: Int,
-    val resumptionDay: Int,
-    val exitDay: Int,
+    var resumptionDay: Int,
+    var exitDay: Int,
     val outDays: MutableList<Int> = mutableListOf(),
     val outSidePostingDays: MutableList<Int> = mutableListOf()
 )

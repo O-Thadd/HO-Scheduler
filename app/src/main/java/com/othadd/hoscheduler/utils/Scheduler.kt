@@ -44,8 +44,14 @@ object Scheduler {
     fun updateScheduleGeneratingHo(hoNumber: Int, name: String, resumptionDate: Int, exitDay: Int) {
         val ho = _newMonthScheduleHoList.value?.find { it.number == hoNumber }
 
-        ho?.outDays?.addAll(hoOffDays)
-        ho?.outSidePostingDays?.addAll(hoOutsidePostingDays)
+        ho?.apply {
+            this.name = name
+            resumptionDay = resumptionDate
+            this.exitDay = exitDay
+            outDays.addAll(hoOffDays)
+            outSidePostingDays.addAll(hoOutsidePostingDays)
+        }
+
 
         hoOffDays.clear()
         hoOutsidePostingDays.clear()
@@ -355,6 +361,11 @@ object Scheduler {
         isActiveCall: Boolean
     ): Ho {
 
+        val numberOfHoCallsList = mutableListOf<Int>()
+        for (ho in hoList){
+            numberOfHoCallsList.add(ho.callDaysAndWard.size)
+        }
+
 //        picking out HOs that are available
         val availableHos: MutableList<Ho> = mutableListOf()
         for (ho in hoList) {
@@ -363,7 +374,8 @@ object Scheduler {
                     minimumIntervalBetweenCalls,
                     dayOfWeek,
                     partnerIsStillNew,
-                    isActiveCall
+                    isActiveCall,
+                    numberOfHoCallsList
                 )
             ) {
                 availableHos.add(ho)
@@ -378,7 +390,8 @@ object Scheduler {
                         minimumIntervalBetweenCalls - 1,
                         dayOfWeek,
                         partnerIsStillNew,
-                        isActiveCall
+                        isActiveCall,
+                        numberOfHoCallsList
                     )
                 ) {
                     availableHos.add(ho)

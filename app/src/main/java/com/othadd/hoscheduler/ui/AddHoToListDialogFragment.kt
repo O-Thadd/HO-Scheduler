@@ -67,7 +67,7 @@ class AddHoToListDialogFragment : DialogFragment() {
         }
 
         if (sharedViewModel.updatingHo) {
-            for (day in sharedViewModel.ho.value?.outDays!!) {
+            for (day in sharedViewModel.ho.value?.outSidePostingDays!!) {
                 outSidePostingDaySelectionItems.find { it.date == day }?.selected = true
             }
         }
