@@ -31,10 +31,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val adapter = MonthSchedulesRecyclerAdapter{
-            val action = HomeFragmentDirections.actionHomeFragmentToMonthScheduleOverviewFragment(it)
-            findNavController().navigate(action)
-        }
+        val adapter = MonthSchedulesRecyclerAdapter({itemClick(it)}, {itemLongClick(it)})
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -46,9 +43,39 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel.selectionMode.observe(viewLifecycleOwner){
+            if (it){
+                binding.buttonDelete.visibility = View.VISIBLE
+            } else {
+                binding.buttonDelete.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun itemClick(it: Int) {
+        if (sharedViewModel.selectionMode.value == true){
+            sharedViewModel.updateSelectedSchedules(it)
+        } else{
+            val action = HomeFragmentDirections.actionHomeFragmentToMonthScheduleOverviewFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun itemLongClick(it: Int) {
+        sharedViewModel.alterSelectionMode()
+        sharedViewModel.updateSelectedSchedules(it)
+    }
+
     fun onCreateMonthScheduleButtonClicked(){
         val action = HomeFragmentDirections.actionHomeFragmentToGenerateNewScheduleFragment()
         findNavController().navigate(action)
+    }
+
+    fun onDeleteButtonClicked(){
+        sharedViewModel.deleteSelectedSchedules()
     }
 
 }

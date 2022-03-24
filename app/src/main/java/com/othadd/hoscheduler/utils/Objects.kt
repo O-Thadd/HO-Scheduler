@@ -1,5 +1,7 @@
 package com.othadd.hoscheduler.utils
 
+import com.othadd.hoscheduler.database.MonthSchedule
+import com.othadd.hoscheduler.database.UiMonthSchedule
 import com.othadd.hoscheduler.ui.recyclerAdapters.MonthScheduleOverviewRecyclerAdapter.DataItem.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -373,4 +375,8 @@ fun DaysContainer.asOverviewHoItems(): List<HoItem> {
         }
     }
     return hoItems
+}
+
+fun List<MonthSchedule>.asUiMonthSchedule(): List<UiMonthSchedule> {
+    return this.map { UiMonthSchedule(it.name, it.hos.size, it.month, it.year) }
 }

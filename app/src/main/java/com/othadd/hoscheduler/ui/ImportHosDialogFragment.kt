@@ -34,11 +34,9 @@ class ImportHosDialogFragment : DialogFragment() {
 
         binding = FragmentImportHosDialogBinding.inflate(inflater, container, false)
 
-        val adapter = MonthSchedulesRecyclerAdapter{
-            sharedViewModel.addImportedHos(it)
+        val adapter = MonthSchedulesRecyclerAdapter({sharedViewModel.addImportedHos(it)
             val action = ImportHosDialogFragmentDirections.actionImportHosDialogFragmentToHoListCreationFragment()
-            findNavController().navigate(action)
-        }
+            findNavController().navigate(action)}, {})
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner

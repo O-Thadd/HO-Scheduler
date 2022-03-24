@@ -1,6 +1,7 @@
 package com.othadd.hoscheduler.ui.recyclerAdapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.othadd.hoscheduler.R
@@ -8,7 +9,10 @@ import com.othadd.hoscheduler.database.MonthSchedule
 import com.othadd.hoscheduler.databinding.MonthSchedulesListItemBinding
 import com.othadd.hoscheduler.utils.MyRecyclerViewAdapter
 
-class MonthSchedulesRecyclerAdapter(private val onClickItem: (Int) -> Unit) : MyRecyclerViewAdapter() {
+class MonthSchedulesRecyclerAdapter(
+    private val onClickItem: (Int) -> Unit,
+    private val onLongClickItem: (Int) -> Unit
+) : MyRecyclerViewAdapter() {
 
     override fun updateDataList(list: List<Any>) {
         dataList = list
@@ -27,7 +31,19 @@ class MonthSchedulesRecyclerAdapter(private val onClickItem: (Int) -> Unit) : My
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val monthSchedule = dataList[position] as MonthSchedule
-        holder.itemView.setOnClickListener { onClickItem(monthSchedule.id) }
+
+        holder.itemView.setOnClickListener {
+            onClickItem(monthSchedule.id)
+            if (selectionMode) (holder as MonthsScheduleViewHolder).alterSelectionState()
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onLongClickItem(monthSchedule.id)
+            startSelection()
+            notifyDataSetChanged()
+            true
+        }
+
         (holder as MonthsScheduleViewHolder).bind(monthSchedule)
     }
 
@@ -38,6 +54,14 @@ class MonthSchedulesRecyclerAdapter(private val onClickItem: (Int) -> Unit) : My
 
     class MonthsScheduleViewHolder(private var binding: MonthSchedulesListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        var selected = false
+
+        fun alterSelectionState() {
+            selected = !selected
+            binding.selectionTickImageView.visibility =
+                if (selected) View.VISIBLE else View.INVISIBLE
+        }
 
         fun bind(monthSchedule: MonthSchedule) {
             binding.apply {
@@ -51,6 +75,7 @@ class MonthSchedulesRecyclerAdapter(private val onClickItem: (Int) -> Unit) : My
                     R.string.number_of_hos,
                     monthSchedule.hos.size
                 )
+                selectionTickImageView.visibility = if (monthSchedule.selected) View.VISIBLE else View.INVISIBLE
             }
         }
     }

@@ -51,6 +51,9 @@ class OverviewViewModel(private val monthScheduleDao: MonthScheduleDao) : ViewMo
     val monthNumber: Int? get() = _singleMonthSchedule.value?.monthNumber
     val year: Int? get() = singleMonthSchedule.value?.year
 
+    private var _selectingSchedule = MutableLiveData<Boolean>()
+    val seleectingSchedule: LiveData<Boolean> get() = _selectingSchedule
+
     fun setHo(hoNumber: Int) {
         _ho.value = hos.value?.find { it.number == hoNumber }
     }

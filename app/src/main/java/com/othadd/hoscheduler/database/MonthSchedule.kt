@@ -16,5 +16,14 @@ data class MonthSchedule(
     @ColumnInfo val days: List<Day>,
     @ColumnInfo val month: String,
     @ColumnInfo val monthNumber: Int,
-    @ColumnInfo val year: Int
+    @ColumnInfo val year: Int,
+    var selected: Boolean = false
+)
+
+data class UiMonthSchedule(
+    val name: String,
+    val hos: Int,
+    val month: String,
+    val year: Int,
+    var selected: Boolean = false
 )
