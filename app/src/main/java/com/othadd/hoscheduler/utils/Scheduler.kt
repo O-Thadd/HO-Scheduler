@@ -361,21 +361,22 @@ object Scheduler {
         isActiveCall: Boolean
     ): Ho {
 
-        val numberOfHoCallsList = mutableListOf<Int>()
+        val hoNumberOfAvailableDaysAndNumberOfCallsList = mutableListOf<Pair<Int, Int>>()
         for (ho in hoList){
-            numberOfHoCallsList.add(ho.callDaysAndWard.size)
+            hoNumberOfAvailableDaysAndNumberOfCallsList.add(Pair(ho.getNumberOfDaysAvailable(), ho.callDaysAndWard.size))
         }
 
 //        picking out HOs that are available
         val availableHos: MutableList<Ho> = mutableListOf()
+
         for (ho in hoList) {
             if (ho.isAvailable(
                     day,
-                    minimumIntervalBetweenCalls,
+                    if (minimumIntervalBetweenCalls > 1) minimumIntervalBetweenCalls else 2,
                     dayOfWeek,
                     partnerIsStillNew,
                     isActiveCall,
-                    numberOfHoCallsList
+                    hoNumberOfAvailableDaysAndNumberOfCallsList
                 )
             ) {
                 availableHos.add(ho)
@@ -387,11 +388,11 @@ object Scheduler {
             for (ho in hoList) {
                 if (ho.isAvailable(
                         day,
-                        minimumIntervalBetweenCalls - 1,
+                        if (minimumIntervalBetweenCalls - 1 > 1) minimumIntervalBetweenCalls - 1 else 2,
                         dayOfWeek,
                         partnerIsStillNew,
                         isActiveCall,
-                        numberOfHoCallsList
+                        hoNumberOfAvailableDaysAndNumberOfCallsList
                     )
                 ) {
                     availableHos.add(ho)

@@ -33,10 +33,15 @@ data class Ho(
     }
 
 
-    private val typicalNumberOfDaysInMonth = 30
+    private val typicalLastDayOfMonth = 30
 
     fun getNumberOfDaysAvailable(): Int {
-        return typicalNumberOfDaysInMonth - outDays.size
+        val numberOfDaysAvailable: Int = if (endDay == 33) {
+            typicalLastDayOfMonth - outDays.size
+        } else {
+            endDay - outDays.size
+        }
+        return numberOfDaysAvailable
     }
 
     fun hasDoneActiveCallBefore(day: Int): Boolean {
@@ -44,17 +49,21 @@ data class Ho(
             return true
         if (activeCallDays.isEmpty())
             return false
-        if(activeCallDays.any { it < day })
+        if (activeCallDays.any { it < day })
             return true
 
         return false
     }
 
-    private fun doesNotHaveMoreCallsThanMostOthers(numberOfHoCallsList: MutableList<Int>): Boolean{
+    private fun doesNotHaveMoreCallsThanMostOthers(hoNumberOfAvailableDaysAndNumberOfCallsList: MutableList<Pair<Int, Int>>): Boolean {
         val numberOfCalls = callDaysAndWard.size
-        val numberOfHosWithSameNumberOfCallsOrMore = numberOfHoCallsList.count { it >= numberOfCalls }
-//        check if up to half of total HOs have same number of calls or more
-        return numberOfHosWithSameNumberOfCallsOrMore > numberOfHoCallsList.size / 2
+        val numberOfAvailableDays = getNumberOfDaysAvailable()
+        val numberOfHosWithSimilarNumberOfAvailableDays =
+            hoNumberOfAvailableDaysAndNumberOfCallsList.count { it.first in numberOfAvailableDays - 3..numberOfAvailableDays + 3 }
+        val numberOfHosWithSameNumberOfCallsOrMoreAndSimilarNumberOfAvailableDays =
+            hoNumberOfAvailableDaysAndNumberOfCallsList.count { (it.first in numberOfAvailableDays - 3..numberOfAvailableDays + 3) && it.second >= numberOfCalls }
+//        check if up to half of  HOs with similar number of available days have same number of calls or more
+        return numberOfHosWithSameNumberOfCallsOrMoreAndSimilarNumberOfAvailableDays > numberOfHosWithSimilarNumberOfAvailableDays / 2
     }
 
 
@@ -64,7 +73,7 @@ data class Ho(
         dayOfWeek: String,
         partnerHasDoneActiveCallBefore: Boolean,
         isActiveCall: Boolean,
-        numberOfHoCallsList: MutableList<Int>
+        hoNumberOfAvailableDaysAndNumberOfCallsList: MutableList<Pair<Int, Int>>
     ): Boolean {
         val enoughBreakBetweenLastAndNextCall =
             enoughBreakBetweenLastAndNextCall(day, minimumIntervalBetweenCalls)
@@ -88,11 +97,15 @@ data class Ho(
         if (isActiveCall && !hasDoneActiveCallBefore(day) && !partnerHasDoneActiveCallBefore)
             bothPartnersNotStillNew = false
         val notYetExitDay = day <= endDay
-        val doesNotHaveMoreCallsThanMostOthers = doesNotHaveMoreCallsThanMostOthers(numberOfHoCallsList)
+        val doesNotHaveMoreCallsThanMostOthers =
+            doesNotHaveMoreCallsThanMostOthers(hoNumberOfAvailableDaysAndNumberOfCallsList)
 
         val availability =
             enoughBreakBetweenLastAndNextCall && notDuringOutDay && noOutsidePostingActiveCallIncompatibility && isNotTooCloseToResumptionDay && bothPartnersNotStillNew && notYetExitDay && doesNotHaveMoreCallsThanMostOthers
 
+//        if (!availability && !doesNotHaveMoreCallsThanMostOthers) {
+//            doesNotHaveMoreCallsThanMostOthers(hoNumberOfAvailableDaysAndNumberOfCallsList)
+//        }
 //        if(!availability) {
 //            Log.e(
 //                "my message",
